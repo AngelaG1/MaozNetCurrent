@@ -1383,6 +1383,7 @@ namespace NetworkGUI
                     net.StandardizeByDiagonalMaximum(displayMatrix);
 
                 int year = startYear;
+                currentYear = startYear;
                 while (true)
                 {
                     progress.curYear = year;
@@ -1971,8 +1972,41 @@ namespace NetworkGUI
             startYear = range.from;
             endYear = range.to;
 
-            for (int year = startYear; year <= endYear; ++year)
+
+            List<int> netIDs = new List<int>();
+
+            if (loadFrom == "Matrix")
             {
+
+            }
+
+            else if (loadFrom == "Dyadic")
+            {
+                string file = openFileDialog.FileName;
+                StreamReader sr = new StreamReader(file);
+
+                string line = sr.ReadLine(); //clearing labels;
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    int y = -1;
+                    string[] lSplit = line.Split(',');
+                    y = Int32.Parse(lSplit[0]);
+
+                    if (!netIDs.Contains(y))
+                    {
+                        netIDs.Add(y);
+                    }
+
+                }
+                sr.Close();
+            }
+
+
+            //for (int year = startYear; year <= endYear; ++year)
+            for (int i = 0; i < netIDs.Count; i++)
+            {
+                int year = netIDs[i];
                 net.SaveToMultipleMatrixFiles(openFileDialog.FileName, files.ToArray(), year, _optionsForm.SaveOverwrite && year == startYear);
             }
 
@@ -3251,7 +3285,7 @@ namespace NetworkGUI
             //progBar.Show();
 
 
-
+            /*
             if (fileNames == null)
             {
                 string curFile = openFileDialog.FileName;
@@ -3272,6 +3306,7 @@ namespace NetworkGUI
             }
 
             MessageBox.Show("File has been created in working directory.");
+            */
         }//made by Alvin 4/30/18
 
         private void loadMultiDyadicMultiplex(string file, bool order)
@@ -3670,8 +3705,14 @@ namespace NetworkGUI
 
 
                 int previousYear = -1;
-                for (int year = startYear; year <= endYear; ++year)
+
+                //create a list of ids
+                List<int> netIDs = getNetIDs(openFileDialog.FileName);
+
+                // for (int year = startYear; year <= endYear; ++year)
+                for (int i = 0; i < netIDs.Count; i++)
                 {
+                    int year = netIDs[i];
                     if (year != previousYear && year <= endYear)
                     {
                         net.LoadSignedNetworkCharacteristics(dataGrid, _optionsForm.ReachNumMatrices, _optionsForm.reachSum, _optionsForm.reachZero, prevDisplayMatrix, year, reachBinary);
@@ -3734,11 +3775,17 @@ namespace NetworkGUI
                 progress.curYear = 0;
                 progress.Show();
 
+                //create a list of ids
+                List<int> netIDs = getNetIDs(openFileDialog.FileName);
 
+                //current save ids
                 int previousYear = -1;
-                for (int year = startYear; year <= endYear; ++year)
+
+                //for (int year = startYear; year <= endYear; ++year)
+                for (int i = 0; i < netIDs.Count; i++)
                 {
-                    if (loadFrom == "Matrix")
+                    int year = netIDs[i];
+                    if(loadFrom == "Matrix")
                     {
                         if (useMultipleFiles)
                         {
@@ -3809,6 +3856,44 @@ namespace NetworkGUI
                     net.SaveAsTableToFile(saveFileDialog.FileName, year == startYear, _optionsForm.SaveOverwrite && year == startYear, displayMatrix, communityType);
                 }
             }
+        }
+
+        private List<int> getNetIDs(string file)
+        {
+            List<int> list = new List<int>();
+            if (loadFrom == "Matrix")
+            {
+                string line;
+                StreamReader sr = new StreamReader(file);
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] lSplit = line.Split(',');
+                    if (lSplit.Length == 1)
+                    {
+                        list.Add(int.Parse(lSplit[0]));
+                    }
+                }
+                    sr.Close();
+            }
+
+            else if (loadFrom == "Dyadic")
+            {
+                StreamReader sr = new StreamReader(file);
+
+                string line = sr.ReadLine(); //clearing labels;
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] lSplit = line.Split(',');
+                    int y = Int32.Parse(lSplit[0]);
+                    if (!list.Contains(y))
+                    {
+                        list.Add(y);
+                    }
+                }
+                sr.Close();
+            }
+            return list;
         }
 
         /**************************************************************************
@@ -4537,11 +4622,13 @@ namespace NetworkGUI
 
         private async void agentBasedModelToolStripMenuItem_Click(object sender, EventArgs e) //Alvin Current
         {
-            //used
+            //defaulting options
             openFileDialog.Multiselect = false;
             SetMode(false);
+
+            //display form
             _ABMForm.ShowDialog();
-            loadFrom = "ABMModel";
+            loadFrom = "ABMModel"; //ind
             int nodecount = 10; int netcount = 1;
             int min = 10; int max = 100; //node range
             int step = 10;
@@ -4570,13 +4657,14 @@ namespace NetworkGUI
 
            
 
-            SetFormTitle();
-            displayMatrix = "Data";
-            currentYear = _ABMForm.netID;
+            SetFormTitle(); //ind
+            displayMatrix = "Data"; //ind
+            currentYear = _ABMForm.netID; //ind
             _optionsForm.ReachNumMatrices = _ABMForm.N - 1;
             string[] labels = new string[32] { "runno", "iteration", "row", "col", "edge", "C0r", "C0c", "demrow", "enmyenmyrow", "cultsimrow", "demcol", "enmyenmycol", "cultsimcol", "kr", "kc", "Csr", "Csc", "Seqr", "Seqc", "Offerr", "Offerc", "Accr", "Accc", "droppedr", "droppedc", "initial", "uij", "cij", "ujk^2", "NeighOfEnemy", "d_i","d_j"};
-            DialogResult result = saveFileDialog.ShowDialog();
 
+            //checking if file is present
+            DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == DialogResult.Yes || result == DialogResult.OK)
             {
@@ -4609,6 +4697,8 @@ namespace NetworkGUI
                         return;
                     }
                 }
+
+
                 net.mList = new List<Matrix>();
                 Matrix m;
                 /*if (false)
@@ -4687,12 +4777,12 @@ namespace NetworkGUI
 
                     else
                     {
-
                     }
                 }
 
-                Parallel.For(0, netlist.Count, i => { matrices[i] = net.ABMShocksNetworkFormation(netlist[i].Item1, _ABMForm.netID + netlist[i].Item2, saveFileDialog.FileName, runno++, _ABMForm.homophily, enemy, cultism, democracy, ref progressform, _ABMForm.UsrInput, _ABMForm.usrFile);});
-                
+                //Parallel.For(0, netlist.Count, i => { matrices[i] = net.ABMShocksNetworkFormation(netlist[i].Item1, _ABMForm.netID + netlist[i].Item2, saveFileDialog.FileName, runno++, _ABMForm.homophily, enemy, cultism, democracy, ref progressform, _ABMForm.UsrInput, _ABMForm.usrFile); });
+                for (int i = 0; i < netlist.Count; i++) { matrices[i] = net.ABMShocksNetworkFormation(netlist[i].Item1, _ABMForm.netID + netlist[i].Item2, saveFileDialog.FileName, runno++, _ABMForm.homophily, enemy, cultism, democracy, ref progressform, _ABMForm.UsrInput, _ABMForm.usrFile); }
+
 
                 int lastNC = 0, lastNT = 0;
                 //Network Matrixs
@@ -4974,7 +5064,12 @@ namespace NetworkGUI
 
         }
 
-      
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //creating progressbar
+            AbmProgressBar bar = new AbmProgressBar();
+            bar.Show();
+        }
 
         private string getCurrentDirectory(string Path)
         {
