@@ -301,7 +301,11 @@ namespace NetworkGUI
                 case "SignedNetwork":
                     //net.LoadSignedNetworkCharacteristics(dataGrid, _optionsForm.ReachNumMatrices, _optionsForm.reachSum, _optionsForm.reachZero, prevDisplayMatrix, currentYear, reachBinary);
                     break;
-
+                //by Angela
+                case "PathBased":
+                   net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix);
+                   break;
+                //-Angela    
                 case "SingleNetworkExpectations":
                     break;
                 case "NetworkSpilloverStatistics":
@@ -3252,6 +3256,136 @@ namespace NetworkGUI
             SetChecked();
         }
 
+        //by Angela
+        private void pathBasedImbalanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //checking if file exists else it does
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+        }
+
+        private void firstOrderPathBasedNullToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            //DataGridView output = new DataGridView();
+            PIF.supportScript(openFileDialog.FileName, 1, true);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+            
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 1, true);
+
+        }
+                
+        private void firstOrderPathBasedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            //DataGridView output = new DataGridView();
+            PIF.supportScript(openFileDialog.FileName, 1, false);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+            
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 1, false);
+
+        }
+        
+        private void secondOrderPathBasedNullToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //checking if file exists else it does
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            
+            PIF.supportScript(openFileDialog.FileName, 2, true);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+           
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 2, true);
+
+        }
+        private void secondOrderPathBasedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //checking if file exists else it does
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            
+            PIF.supportScript(openFileDialog.FileName, 2, false);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+           
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 2, false);
+
+        }
+
+        private void thirdOrderPathBasedNullToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            
+            PIF.supportScript(openFileDialog.FileName, 3, true);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 3, true);
+
+        }
+        private void thirdOrderPathBasedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileNames == null && openFileDialog.FileName == "")
+            {
+                MessageBox.Show("Error File not loaded");
+                return;
+            }
+
+            PathBasedImbalance PIF = new PathBasedImbalance();
+            
+            PIF.supportScript(openFileDialog.FileName, 3, false);
+            SetNewDisplayMatrix("PathBased");
+            net.ClearPreviousData(displayMatrix, "Dyadic");
+            SetChecked();
+
+            net.LoadPathBasedIntoDataGridView(dataGrid, displayMatrix, 3, false);
+
+        }
+
+        //-Angela
+
         private void dyadicMultiplexNullModelToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -5064,12 +5198,12 @@ namespace NetworkGUI
 
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        /*private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //creating progressbar
             AbmProgressBar bar = new AbmProgressBar();
             bar.Show();
-        }
+        }*/
 
         private string getCurrentDirectory(string Path)
         {

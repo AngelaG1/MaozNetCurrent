@@ -159,6 +159,12 @@
     <Compile Include="Forms\MultiplexImbalanceForm.Designer.cs">
       <DependentUpon>MultiplexImbalanceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PathBasedImbalance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PathBasedImbalance.Designer.cs">
+      <DependentUpon>PathBasedImbalance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MultiplexProgress.cs">
       <SubType>Form</SubType>
     </Compile>

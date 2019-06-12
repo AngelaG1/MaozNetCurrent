@@ -201,6 +201,16 @@ namespace NetworkGUI
             this.signedNetworkCharacteristicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.localBalanceMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyadicMultiplexImbalanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pathBasedImbalanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.firstOrderPathBasedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondOrderPathBasedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thirdOrderPathBasedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.firstOrderPathBasedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondOrderPathBasedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thirdOrderPathBasedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.firstOrderPathBasedNullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondOrderPathBasedNullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thirdOrderPathBasedNullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coalitionAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.protoCoalitionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viableCoalitionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1597,7 +1607,8 @@ namespace NetworkGUI
             this.reachabilityMatrixToolStripMenuItem1,
             this.signedNetworkCharacteristicsToolStripMenuItem,
             this.localBalanceMatrixToolStripMenuItem,
-            this.dyadicMultiplexImbalanceToolStripMenuItem});
+            this.dyadicMultiplexImbalanceToolStripMenuItem,
+            this.pathBasedImbalanceToolStripMenuItem});
             this.signedNetworkOperationsToolStripMenuItem.Name = "signedNetworkOperationsToolStripMenuItem";
             this.signedNetworkOperationsToolStripMenuItem.Size = new System.Drawing.Size(164, 20);
             this.signedNetworkOperationsToolStripMenuItem.Text = "Signed Network Operations";
@@ -1653,6 +1664,87 @@ namespace NetworkGUI
             this.dyadicMultiplexImbalanceToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.dyadicMultiplexImbalanceToolStripMenuItem.Text = "Dyadic Multiplex Imbalance";
             this.dyadicMultiplexImbalanceToolStripMenuItem.Click += new System.EventHandler(this.dyadicMultiplexImbalanceToolStripMenuItem_Click);
+            //
+            //Written by Angela
+            //pathBasedImbalanceToolStripMenuItem
+            //
+            this.pathBasedImbalanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.firstOrderPathBasedOptionsToolStripMenuItem,
+            this.secondOrderPathBasedOptionsToolStripMenuItem,
+            this.thirdOrderPathBasedOptionsToolStripMenuItem});
+            this.pathBasedImbalanceToolStripMenuItem.Name = "pathBasedImbalanceToolStripMenuItem";
+            this.pathBasedImbalanceToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.pathBasedImbalanceToolStripMenuItem.Text = "Path Based Imbalance";
+            this.pathBasedImbalanceToolStripMenuItem.Click += new System.EventHandler(this.pathBasedImbalanceToolStripMenuItem_Click);
+            //
+            //First order path based
+            //
+            this.firstOrderPathBasedOptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.firstOrderPathBasedToolStripMenuItem,
+            this.firstOrderPathBasedNullToolStripMenuItem});
+            this.firstOrderPathBasedOptionsToolStripMenuItem.Name = "firstOrderPathBasedOptionsToolStripMenuItem";
+            this.firstOrderPathBasedOptionsToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.firstOrderPathBasedOptionsToolStripMenuItem.Text = "First Order Imbalance/Balance";
+            this.firstOrderPathBasedOptionsToolStripMenuItem.Click += new System.EventHandler(this.pathBasedImbalanceToolStripMenuItem_Click);
+            
+            this.firstOrderPathBasedToolStripMenuItem.Name = "firstOrderPathBasedToolStripMenuItem";
+            this.firstOrderPathBasedToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.firstOrderPathBasedToolStripMenuItem.Text = "Without Null Model";
+            this.firstOrderPathBasedToolStripMenuItem.Click += new System.EventHandler(this.firstOrderPathBasedToolStripMenuItem_Click);
+
+             
+            this.firstOrderPathBasedNullToolStripMenuItem.Name = "firstOrderPathBasedNullToolStripMenuItem";
+            this.firstOrderPathBasedNullToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.firstOrderPathBasedNullToolStripMenuItem.Text = "Null Model";
+            this.firstOrderPathBasedNullToolStripMenuItem.Click += new System.EventHandler(this.firstOrderPathBasedNullToolStripMenuItem_Click);
+            
+            //
+            //Second order path based
+            //
+
+            this.secondOrderPathBasedOptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.secondOrderPathBasedToolStripMenuItem,
+            this.secondOrderPathBasedNullToolStripMenuItem});
+            this.secondOrderPathBasedOptionsToolStripMenuItem.Name = "secondOrderPathBasedOptionsToolStripMenuItem";
+            this.secondOrderPathBasedOptionsToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.secondOrderPathBasedOptionsToolStripMenuItem.Text = "Second Order Imbalance/Balance";
+            this.secondOrderPathBasedOptionsToolStripMenuItem.Click += new System.EventHandler(this.pathBasedImbalanceToolStripMenuItem_Click);
+
+            this.secondOrderPathBasedToolStripMenuItem.Name = "secondOrderPathBasedToolStripMenuItem";
+            this.secondOrderPathBasedToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.secondOrderPathBasedToolStripMenuItem.Text = "Without Null Model";
+            this.secondOrderPathBasedToolStripMenuItem.Click += new System.EventHandler(this.secondOrderPathBasedToolStripMenuItem_Click);
+
+                        
+            this.secondOrderPathBasedNullToolStripMenuItem.Name = "secondOrderPathBasedNullToolStripMenuItem";
+            this.secondOrderPathBasedNullToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.secondOrderPathBasedNullToolStripMenuItem.Text = "Null Model";
+            this.secondOrderPathBasedNullToolStripMenuItem.Click += new System.EventHandler(this.secondOrderPathBasedNullToolStripMenuItem_Click);
+
+            //
+            //Third order path based
+            //
+
+            this.thirdOrderPathBasedOptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thirdOrderPathBasedToolStripMenuItem,
+            this.thirdOrderPathBasedNullToolStripMenuItem});
+            this.thirdOrderPathBasedOptionsToolStripMenuItem.Name = "thirdOrderPathBasedOptionsToolStripMenuItem";
+            this.thirdOrderPathBasedOptionsToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.thirdOrderPathBasedOptionsToolStripMenuItem.Text = "Third Order Imbalance/Balance";
+            this.thirdOrderPathBasedOptionsToolStripMenuItem.Click += new System.EventHandler(this.pathBasedImbalanceToolStripMenuItem_Click);
+
+            this.thirdOrderPathBasedToolStripMenuItem.Name = "thirdOrderPathBasedToolStripMenuItem";
+            this.thirdOrderPathBasedToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.thirdOrderPathBasedToolStripMenuItem.Text = "Without Null Model";
+            this.thirdOrderPathBasedToolStripMenuItem.Click += new System.EventHandler(this.thirdOrderPathBasedToolStripMenuItem_Click);
+            
+            this.thirdOrderPathBasedNullToolStripMenuItem.Name = "thirdOrderPathBasedNullToolStripMenuItem";
+            this.thirdOrderPathBasedNullToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.thirdOrderPathBasedNullToolStripMenuItem.Text = "Null Model";
+            this.thirdOrderPathBasedNullToolStripMenuItem.Click += new System.EventHandler(this.thirdOrderPathBasedNullToolStripMenuItem_Click);
+            //Written by Angela
+            
+            
             // 
             // coalitionAnalysisToolStripMenuItem
             // 
@@ -2032,6 +2124,17 @@ namespace NetworkGUI
         private System.Windows.Forms.ToolStripMenuItem agentBasedModelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem matrixMultSaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyadicMultiplexImbalanceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pathBasedImbalanceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem firstOrderPathBasedOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secondOrderPathBasedOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thirdOrderPathBasedOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem firstOrderPathBasedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secondOrderPathBasedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thirdOrderPathBasedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem firstOrderPathBasedNullToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secondOrderPathBasedNullToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thirdOrderPathBasedNullToolStripMenuItem;
+         
     }
 }
 

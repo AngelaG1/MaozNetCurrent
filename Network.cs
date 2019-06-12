@@ -12646,7 +12646,255 @@ namespace Network
             Triads triad = new Triads(mTable["Data"], Triads.TriadType.NonBalance);
             mTable[ms] = triad.calcDyadicTransitivity(mTable["Data"]);
         }
+        
+        //by Angela
+         public void LoadPathBasedIntoDataGridView(DataGridView data, string displayMatrix, int order, bool Null){
+          
+            data.Columns.Clear();
+            //data.ColumnCount = 25;
+            //data.Columns.Add("networkid",i,j,positive_1,negative_1,imbal_1,p_r_1,n_r_1,rand_imbal_1,positive_2,negative_2,total_positive_2,total_negative_2,imbal_2,p_r_2,n_r_2,rand_imbal_2,positive_3,negative_3,total_positive_3,total_negative_3,imbal_3,p_r_3,n_r_3,rand_imbal_3");
+            
+            //Read All text
+            string fileData = System.IO.File.ReadAllText("temp_output.csv");
+            //Split All text into lines
+            //fileData = fileData.Replace('\n','\r');
+            string[] lines = fileData.Split('\n');
+            //Get rows and Columns count
+            int totalRows = lines.Length-1;
+            int totalCols = lines[0].Split(',').Length;
 
+            //Allocate Data to Matrix
+
+            Matrix matrix = new Matrix(totalRows,totalCols);
+            
+            for(int i = 0; i<totalRows-1; i++){
+                //File ends at n+1 matrix entry n because title row.
+            string[] line_r = lines[i+1].Split(',');
+                
+            for(int j = 0; j<totalCols; j++){
+                   if(Double.TryParse(line_r[j], out double val))
+                    matrix[i,j] = val;
+                   else break;
+            }
+
+            }
+           File.Delete("temp_output.csv");
+           
+    
+
+             //displaying Grid
+            //columns
+          //Matrix output = mTable.AddMatrix("PathBased", totalRows, totalCols);
+            
+            Matrix output = null;
+                        
+
+            string[] labels_1 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1"};
+  
+            
+
+            string[] labels_2 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1",
+                                "positive_2","negative_2","total_positive_2","total_negative_2","imbal_2"};
+  
+
+            string[] labels_3 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1",
+                                "positive_2","negative_2","total_positive_2","total_negative_2","imbal_2",
+                                "positive_3","negative_3","total_positive_3","total_negative_3","imbal_3"};
+                
+            
+            if(Null){
+            labels_1 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1","p_r_1","n_r_1","rand_imbal_1"};
+  
+            
+
+            labels_2 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1","p_r_1","n_r_1","rand_imbal_1",
+                                "positive_2","negative_2","total_positive_2","total_negative_2","imbal_2","p_r_2","n_r_2","rand_imbal_2"};
+  
+
+            labels_3 = new string[] {"networkid","i","j","positive_1","negative_1","imbal_1","p_r_1","n_r_1","rand_imbal_1",
+                                "positive_2","negative_2","total_positive_2","total_negative_2","imbal_2","p_r_2","n_r_2","rand_imbal_2",
+                                "positive_3","negative_3","total_positive_3","total_negative_3","imbal_3","p_r_3","n_r_3","rand_imbal_3"};
+                }
+
+  
+            if(order == 1){
+            
+            output = mTable.AddMatrix("PathBased", totalRows-1, labels_1.Length);
+            for(int i = 0; i<labels_1.Length; i++){
+        
+                    output.ColLabels[i] = labels_1[i];
+            }
+            }
+            else if(order == 2){
+            
+            output = mTable.AddMatrix("PathBased", totalRows-1, labels_2.Length);
+            for(int i = 0; i<labels_2.Length; i++){
+        
+                    output.ColLabels[i] = labels_2[i];
+            }
+            }
+            if(order == 3){
+            
+            output = mTable.AddMatrix("PathBased", totalRows-1, labels_3.Length);
+
+            for(int i = 0; i<labels_3.Length; i++){
+        
+                    output.ColLabels[i] = labels_3[i];
+            }
+            }
+
+
+            /* output.ColLabels[0] = "NetworkID";
+            output.ColLabels[1] = "i";
+            output.ColLabels[2] = "j";
+            output.ColLabels[3] = "positive_1";
+            output.ColLabels[4] = "negative_1";
+            output.ColLabels[5] = "imbal_1";
+            output.ColLabels[6] = "p_r_1";
+            output.ColLabels[7] = "n_r_1";
+            output.ColLabels[8] = "rand_imbal_1";
+            output.ColLabels[9] = "positive_2";
+            output.ColLabels[10] = "negative_2";
+            output.ColLabels[11] = "total_positive_2";
+            output.ColLabels[12] = "total_negative_2";
+            output.ColLabels[13] = "imbal_2";
+            output.ColLabels[14] = "p_r_2";
+            output.ColLabels[15] = "n_r_2";
+            output.ColLabels[16] = "rand_imbal_2";
+            output.ColLabels[17] = "positive_3";
+            output.ColLabels[18] = "negative_3";
+            output.ColLabels[19] = "total_positive_3";
+            output.ColLabels[20] = "total_negative_3";
+            output.ColLabels[21] = "imbal_3";
+            output.ColLabels[22] = "p_r_3";
+            output.ColLabels[23] = "n_r_3";
+            output.ColLabels[24] = "rand_imbal_3";
+
+            */
+
+
+            for (int i = 0; i < output.ColLabels.Length; i++)
+                data.Columns.Add(output.ColLabels[i], output.ColLabels[i]);
+                
+
+            //rows
+            for (int i = 0; i < output.Rows; i++)
+            {
+                string[] dataRow = new string[output.Cols];
+                for (int j = 0; j < output.Cols; j++)
+                {
+                    mTable[displayMatrix][i,j] = matrix[i,j];   
+                    dataRow[j] = matrix[i,j].ToString() ;//>= 0? mTable[i, j].ToString() : "#N/A";
+                }
+                data.Rows.Add(dataRow);
+            }
+            //mTable[displayMatrix] = new Matrix(matrix);
+          //data.DataSource = mTable[displayMatrix];
+         
+           //GUI.DataGridViewLoader.LoadMatrixIntoDataGridView(data, output);
+           
+        }
+
+        
+        public void LoadPathBasedIntoDataGridView(DataGridView data, string displayMatrix){
+          
+            data.Columns.Clear();
+            //data.ColumnCount = 25;
+            //data.Columns.Add("networkid",i,j,positive_1,negative_1,imbal_1,p_r_1,n_r_1,rand_imbal_1,positive_2,negative_2,total_positive_2,total_negative_2,imbal_2,p_r_2,n_r_2,rand_imbal_2,positive_3,negative_3,total_positive_3,total_negative_3,imbal_3,p_r_3,n_r_3,rand_imbal_3");
+            
+            //Read All text
+            string fileData = System.IO.File.ReadAllText("temp_output.csv");
+            //Split All text into lines
+            //fileData = fileData.Replace('\n','\r');
+            string[] lines = fileData.Split('\n');
+            //Get rows and Columns count
+            int totalRows = lines.Length-1;
+            int totalCols = lines[0].Split(',').Length;
+            //data.RowCount = totalRows;
+            //Allocate Data to Matrix
+
+            Matrix matrix = new Matrix(totalRows,totalCols);
+            
+            for(int i = 0; i<totalRows; i++){
+            string[] line_r = lines[i+1].Split(',');
+                
+            for(int j = 0; j<totalCols; j++){
+                   if(Double.TryParse(line_r[j], out double val))
+                    matrix[i,j] = val;
+                   else break;
+            }
+
+            }
+           //File.Delete("temp_output.csv");
+           
+            //string[] labelParts = { "Network ID", "Node ID", "d", "LB" ,"kG"};
+            //for (int i = 0; i < labelParts.Length; ++i)
+              //  data.Columns.Add(labelParts[i], labelParts[i]);
+            //mTable[displayMatrix] = new Matrix();
+
+            /*for(int i = 0 ; i < 5; i++){
+
+for(int j = 0 ; j<5 ; j++){
+            mTable[displayMatrix][i,j] = i+j;    
+
+}                                 
+
+}*/
+             //displaying Grid
+            //columns
+            Matrix output = mTable.AddMatrix("PathBased", totalRows, totalCols);
+            output.ColLabels[0] = "NetworkID";
+            output.ColLabels[1] = "i";
+            output.ColLabels[2] = "j";
+            output.ColLabels[3] = "positive_1";
+            output.ColLabels[4] = "negative_1";
+            output.ColLabels[5] = "imbal_1";
+            output.ColLabels[6] = "p_r_1";
+            output.ColLabels[7] = "n_r_1";
+            output.ColLabels[8] = "rand_imbal_1";
+            output.ColLabels[9] = "positive_2";
+            output.ColLabels[10] = "negative_2";
+            output.ColLabels[11] = "total_positive_2";
+            output.ColLabels[12] = "total_negative_2";
+            output.ColLabels[13] = "imbal_2";
+            output.ColLabels[14] = "p_r_2";
+            output.ColLabels[15] = "n_r_2";
+            output.ColLabels[16] = "rand_imbal_2";
+            output.ColLabels[17] = "positive_3";
+            output.ColLabels[18] = "negative_3";
+            output.ColLabels[19] = "total_positive_3";
+            output.ColLabels[20] = "total_negative_3";
+            output.ColLabels[21] = "imbal_3";
+            output.ColLabels[22] = "p_r_3";
+            output.ColLabels[23] = "n_r_3";
+            output.ColLabels[24] = "rand_imbal_3";
+
+
+
+
+            for (int i = 0; i < output.ColLabels.Length; i++)
+                data.Columns.Add(output.ColLabels[i], output.ColLabels[i]);
+                
+
+            //rows
+            for (int i = 0; i < output.Rows; i++)
+            {
+                string[] dataRow = new string[output.Cols];
+                for (int j = 0; j < output.Cols; j++)
+                {
+                    mTable[displayMatrix][i,j] = matrix[i,j];   
+                    dataRow[j] = matrix[i,j].ToString() ;//>= 0? mTable[i, j].ToString() : "#N/A";
+                }
+                data.Rows.Add(dataRow);
+            }
+            //mTable[displayMatrix] = new Matrix(matrix);
+          //data.DataSource = mTable[displayMatrix];
+         
+           //GUI.DataGridViewLoader.LoadMatrixIntoDataGridView(data, output);
+           
+        }
+
+        //-Angela
         public void LoadLocalBalanceMatrix(DataGridView data, int networkID)
         {
             data.Columns.Clear();
