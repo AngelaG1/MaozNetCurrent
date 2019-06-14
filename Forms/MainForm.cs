@@ -3909,17 +3909,11 @@ namespace NetworkGUI
                 progress.curYear = 0;
                 progress.Show();
 
-                //create a list of ids
-                List<int> netIDs = getNetIDs(openFileDialog.FileName);
 
-                //current save ids
                 int previousYear = -1;
-
-                //for (int year = startYear; year <= endYear; ++year)
-                for (int i = 0; i < netIDs.Count; i++)
+                for (int year = startYear; year <= endYear; ++year)
                 {
-                    int year = netIDs[i];
-                    if(loadFrom == "Matrix")
+                    if (loadFrom == "Matrix")
                     {
                         if (useMultipleFiles)
                         {
@@ -3964,7 +3958,9 @@ namespace NetworkGUI
                         if (net.CohesionFilename != null)
                             net.CohesionMatrix = MatrixReader.ReadMatrixFromFile(net.CohesionFilename, year);
                         //DoLoadCorrect(year);
+
                         currentYear = year;
+
                         LoadData();
                         if (displayMatrix == "NatDep")
                         {
@@ -3982,11 +3978,16 @@ namespace NetworkGUI
                             }
                         }
                     }
+                    else if (displayMatrix == "PathBased")
+                    {
+
+                        currentYear = year;
+                    }
                     else
                     {
                         throw new Exception("Cannot save " + displayMatrix.ToString() + " matrix as a Table format");
                     }
-                        
+
                     net.SaveAsTableToFile(saveFileDialog.FileName, year == startYear, _optionsForm.SaveOverwrite && year == startYear, displayMatrix, communityType);
                 }
             }
