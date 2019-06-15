@@ -426,6 +426,7 @@ namespace NetworkGUI.Forms
             //string output_file = "results_big.csv";
             string file_name = inputFile.Replace(@"\\", @"\");
             string output_file = "temp_output.csv";
+            int val; // to check if int or string
             var main_reader = new StreamReader(file_name);
             //output_writer must append --> option
             var output_writer = new StreamWriter(output_file, true);
@@ -459,7 +460,7 @@ namespace NetworkGUI.Forms
             var reader__ = reader_.ReadLine().Split(',');
             int num_cols = reader__.Length;
             current_year = reader__[0];
-            //logger.WriteLine("First current_year value = {0}", current_year);
+           //logger.WriteLine("First current_year value = {0}", current_year);
             reader_.Close();
 
 
@@ -475,7 +476,7 @@ namespace NetworkGUI.Forms
 
                 // /Console.WriteLine("The num_cols : {0}",num_cols);
 
-                if (cols[0] == "year") continue;
+                if (!int.TryParse(cols[0],out val)) continue;
 
                 HashSet<string> states_set = new HashSet<string>();
 
@@ -526,13 +527,14 @@ namespace NetworkGUI.Forms
                     var local_line = local_reader.ReadLine();
                     //logger.WriteLine("local:{0}", local_line);
                     var row_in_year = local_line.Split(',');
-                    if (row_in_year[0] == "year") continue;
+                    
+                    if (!int.TryParse(row_in_year[0],out val)) continue;
                     current_year = row_in_year[0];
                     if (row_in_year[1] == row_in_year[2]) continue;
 
                     for (int i = 3; i < num_cols; i++)
                     {
-                        //logger.WriteLine("key_i = {0}, key_j = {1}",row_in_year[1], row_in_year[2]);
+                       //logger.WriteLine("key_i = {0}, key_j = {1}",row_in_year[1], row_in_year[2]);
                         if (int.Parse(row_in_year[i]) > 0)
                         {
                             //logger.WriteLine("pos: {0},{1}-->{2},{3}", states_hash[row_in_year[1]], states_hash[row_in_year[2]], row_in_year[1], row_in_year[2]);
@@ -555,14 +557,14 @@ namespace NetworkGUI.Forms
                 Array.Clear(x_minus_ref, 0, x_minus_ref.Length);
                 states_hash.Clear();
                 states_set.Clear();
-                //logger.WriteLine("Table Printed for : {0}", NetID);
+               //logger.WriteLine("Table Printed for : {0}", NetID);
                 Console.WriteLine("Table Printed for : {0}", NetID);
             }
 
             main_reader.Close();
             local_reader.Close();
             output_writer.Close();
-            //logger.Close();
+           //logger.Close();
             //MessageBox.Show("Temp Output saved");
         }
     }

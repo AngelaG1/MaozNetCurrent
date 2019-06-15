@@ -12803,7 +12803,10 @@ namespace Network
             //data.Columns.Add("networkid",i,j,positive_1,negative_1,imbal_1,p_r_1,n_r_1,rand_imbal_1,positive_2,negative_2,total_positive_2,total_negative_2,imbal_2,p_r_2,n_r_2,rand_imbal_2,positive_3,negative_3,total_positive_3,total_negative_3,imbal_3,p_r_3,n_r_3,rand_imbal_3");
             
             //Read All text
+
+            try{
             string fileData = System.IO.File.ReadAllText("temp_output.csv");
+
             //Split All text into lines
             //fileData = fileData.Replace('\n','\r');
             string[] lines = fileData.Split('\n');
@@ -12886,6 +12889,13 @@ for(int j = 0 ; j<5 ; j++){
                     dataRow[j] = matrix[i,j].ToString() ;//>= 0? mTable[i, j].ToString() : "#N/A";
                 }
                 data.Rows.Add(dataRow);
+            }
+
+            }
+            
+            catch(FileNotFoundException exception)
+            {
+                MessageBox.Show("FileNotFoundException");
             }
             //mTable[displayMatrix] = new Matrix(matrix);
           //data.DataSource = mTable[displayMatrix];
