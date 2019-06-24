@@ -3981,7 +3981,9 @@ namespace NetworkGUI
                     else if (displayMatrix == "PathBased")
                     {
 
-                        currentYear = year;
+                        currentYear = endYear;
+                        net.SaveAsTableToFile(saveFileDialog.FileName, year == startYear, _optionsForm.SaveOverwrite && year == startYear, displayMatrix,year, endYear);
+                        return;
                     }
                     else
                     {

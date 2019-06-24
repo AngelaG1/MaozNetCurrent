@@ -9757,7 +9757,69 @@ namespace Network
             }
         }
 
+        //Angela
+        public void SaveAsTableToFile(string fileName, bool label, bool Overwrite, string m, int year, int endYear)
+        {
+            bool modularityLabels = false;
+            if (m == "ClusterCharacteristics")
+                m = "BlockCharacteristics";
+            if (mTable[m] == null)
+                throw new Exception(m.ToString() + " matrix does not exist");
+            StreamWriter sw;
+            if (!File.Exists(fileName))
+            {
+                sw = File.CreateText(fileName);
+                modularityLabels = true;
+            }
+            else
+            {
+                if (Overwrite)
+                {
+                    File.Delete(fileName);
+                    sw = File.CreateText(fileName);
+                    modularityLabels = true;
 
+                }
+                else
+                {
+                    sw = File.AppendText(fileName);
+                    modularityLabels = false;
+                }
+            }
+
+                string[] labels = new string[mTable[m].Cols];
+                for (int i = 0; i < mTable[m].Cols; i++)
+                    labels[i] = mTable[m].ColLabels[i];
+
+
+                if (label)
+                    sw.WriteLine(string.Join(",", labels));
+
+                for (int row = 0; row < mTable[m].Rows; row++)
+                {
+
+                    if(mTable[m][row, 0] < Convert.ToDouble(year)) 
+                            continue;
+                    if(mTable[m][row, 0] == Convert.ToDouble(endYear+1)) 
+                            break;
+                    string[] values = new string[mTable[m].Cols];
+                    for (int col = 0; col < mTable[m].Cols; col++)
+                    {
+                        if (mTable[m].ColIsNonInteger && col == mTable[m].ColOfNonInteger)
+                            values[col] = mTable[m].ActualCol[row];
+                        else
+                            values[col] = mTable[m][row, col].ToString();
+                    }
+                    sw.WriteLine(string.Join(",", values));
+                }
+
+
+                sw.Flush();
+                sw.Close();
+                sw = null;
+         
+        }
+        //Angela
 
 
 
@@ -12678,7 +12740,7 @@ namespace Network
             }
 
             }
-           File.Delete("temp_output.csv");
+          // File.Delete("temp_output.csv");
            
     
 
@@ -12788,6 +12850,7 @@ namespace Network
                 }
                 data.Rows.Add(dataRow);
             }
+            File.Delete("temp_output.csv");
             //mTable[displayMatrix] = new Matrix(matrix);
           //data.DataSource = mTable[displayMatrix];
          
